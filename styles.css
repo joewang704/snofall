@@ -1,0 +1,26 @@
+body {
+  font-family: system-ui, sans-serif;
+  padding: 20px;
+}
+h1 {
+  margin-bottom: 0.5rem;
+}
+select {
+  margin: 1rem 0;
+  padding: 0.25rem;
+}
+ul {
+  list-style: none;
+  padding: 0;
+}
+li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
+}
+.snow {
+  font-weight: bold;
+}
+.muted {
+  color: #666;
+  font-size: 0.9rem;
+}
