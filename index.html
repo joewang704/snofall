@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <title>Indy Pass East Coast Snowfall</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="resorts.js"></script>
+    <!-- External packages -->
+    <script src="https://cdn.plot.ly/plotly-3.3.1.min.js"></script>
   </head>
   <body>
     <h1>Indy Pass – East Coast Snowfall</h1>
@@ -15,100 +18,13 @@
     </label>
 
     <ul id="resortList"></ul>
+    <button id="showGraphBtn">Show 7-Day Graph</button>
+    <div
+      id="snowfallChart"
+      style="max-width: 900px; height: 500px; margin-top: 20px"
+    ></div>
 
-    <script>
-      // Basic resort list (approximate lat/lon)
-      const resorts = [
-        { name: "Berkshire East", state: "MA", lat: 42.623, lon: -72.872 },
-        { name: "Wachusett", state: "MA", lat: 42.495, lon: -71.886 },
-        { name: "Mohawk Mountain", state: "CT", lat: 41.838, lon: -73.211 },
-        { name: "Cannon Mountain", state: "NH", lat: 44.156, lon: -71.698 },
-        { name: "Waterville Valley", state: "NH", lat: 43.95, lon: -71.52 },
-        { name: "Black Mountain", state: "NH", lat: 44.27, lon: -71.18 },
-        { name: "Tenney Mountain", state: "NH", lat: 43.56, lon: -71.64 },
-        { name: "Pats Peak", state: "NH", lat: 43.203, lon: -71.66 },
-        { name: "Bolton Vkalley", state: "VT", lat: 44.421, lon: -72.851 },
-        { name: "Magic Mountain", state: "VT", lat: 43.206, lon: -72.776 },
-        { name: "Pico Mountain", state: "VT", lat: 43.661, lon: -72.843 },
-        { name: "Jay Peak", state: "VT", lat: 44.937, lon: -72.504 },
-        { name: "Saddleback", state: "ME", lat: 44.936, lon: -70.503 },
-        { name: "Sugarloaf", state: "ME", lat: 45.031, lon: -70.313 },
-      ];
-
-      const daySelect = document.getElementById("daySelect");
-      const resortList = document.getElementById("resortList");
-
-      // Populate next 7 days
-      const today = new Date();
-      for (let i = 0; i < 7; i++) {
-        const d = new Date(today);
-        d.setDate(today.getDate() + i);
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = d.toDateString();
-        daySelect.appendChild(opt);
-      }
-
-      async function getSnowfall(lat, lon, dayOffset) {
-        try {
-          // Step 1: convert lat/lon to gridpoint
-          const pointResp = await fetch(
-            `https://api.weather.gov/points/${lat},${lon}`
-          );
-          const pointData = await pointResp.json();
-          const { gridId, gridX, gridY } = pointData.properties;
-
-          // Step 2: get gridpoint forecast (quantitative)
-          const gridResp = await fetch(
-            `https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}`
-          );
-          const gridData = await gridResp.json();
-
-          const snowfall = gridData.properties.snowfallAmount.values;
-          if (!snowfall || snowfall.length === 0) return 0;
-
-          const targetDate = new Date(today);
-          targetDate.setDate(today.getDate() + Number(dayOffset));
-
-          // Sum snowfall entries for the selected calendar day
-          let total = 0;
-          snowfall.forEach((entry) => {
-            const entryDate = new Date(entry.validTime.split("/")[0]);
-            if (entryDate.toDateString() === targetDate.toDateString()) {
-              if (typeof entry.value === "number") total += entry.value;
-            }
-          });
-
-          return total;
-        } catch (e) {
-          console.error(e);
-          return null;
-        }
-      }
-
-      async function render() {
-        resortList.innerHTML = "";
-        const dayOffset = daySelect.value;
-
-        for (const resort of resorts) {
-          const li = document.createElement("li");
-          li.textContent = `${resort.name} (${resort.state}) – loading…`;
-          resortList.appendChild(li);
-
-          const snow = await getSnowfall(resort.lat, resort.lon, dayOffset);
-          if (snow === null) {
-            li.textContent = `${resort.name} (${resort.state}) – unavailable`;
-          } else {
-            const feet = snow / 12;
-            li.innerHTML = `${resort.name} (${
-              resort.state
-            }): <span class="snow">${feet.toFixed(2)} ft</span>`;
-          }
-        }
-      }
-
-      daySelect.addEventListener("change", render);
-      render();
-    </script>
+    <script src="graph.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

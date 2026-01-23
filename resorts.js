@@ -1,0 +1,16 @@
+const resorts = [
+  { name: "Berkshire East", state: "MA", lat: 42.623, lon: -72.872 },
+  { name: "Wachusett", state: "MA", lat: 42.495, lon: -71.886 },
+  { name: "Mohawk Mountain", state: "CT", lat: 41.838, lon: -73.211 },
+  { name: "Cannon Mountain", state: "NH", lat: 44.156, lon: -71.698 },
+  { name: "Waterville Valley", state: "NH", lat: 43.95, lon: -71.52 },
+  { name: "Black Mountain", state: "NH", lat: 44.27, lon: -71.18 },
+  { name: "Tenney Mountain", state: "NH", lat: 43.56, lon: -71.64 },
+  { name: "Pats Peak", state: "NH", lat: 43.203, lon: -71.66 },
+  { name: "Bolton Valley", state: "VT", lat: 44.421, lon: -72.851 },
+  { name: "Magic Mountain", state: "VT", lat: 43.206, lon: -72.776 },
+  { name: "Pico Mountain", state: "VT", lat: 43.661, lon: -72.843 },
+  { name: "Jay Peak", state: "VT", lat: 44.937, lon: -72.504 },
+  { name: "Saddleback", state: "ME", lat: 44.936, lon: -70.503 },
+  { name: "Sugarloaf", state: "ME", lat: 45.031, lon: -70.313 },
+];
